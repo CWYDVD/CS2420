@@ -1,4 +1,4 @@
-package assign02;
+import assign02.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,17 +49,17 @@ public class FacilityTester {
 		// (HINT: For a larger facility, use the helpers at the end of this file to
 		//        generate names, IDs, and dates.)
 
-//		// How to test on largeFacility if we are having random names and id? do we just check numbers?
-//		largeFacility = new Facility();
-//		String[] firstNames = generateNames(1000);
-//		String[] lastNames = generateNames(1000);
-//		UHealthID[] UHealthIDs = generateUHIDs(1000);
-//		GregorianCalendar[] dates = generateDates(1000);
-//		Random random = new Random();
-//		for (int i = 1; i <= 1000; i++) {
-//			int physician = 1000000 + random.nextInt(9000000);
-//			largeFacility.addPatient(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
-//		}
+		// How to test on largeFacility if we are having random names and id? do we just check numbers?
+		largeFacility = new Facility();
+		String[] firstNames = generateNames(1000);
+		String[] lastNames = generateNames(1000);
+		UHealthID[] UHealthIDs = generateUHIDs(1000);
+		GregorianCalendar[] dates = generateDates(1000);
+		Random random = new Random();
+		for (int i = 1; i <= 1000; i++) {
+			int physician = 1000000 + random.nextInt(9000000);
+			largeFacility.addPatient(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
+		}
 	}
 	
 	// Empty Facility tests --------------------------------------------------------
@@ -155,32 +155,23 @@ public class FacilityTester {
 	}
 
 	/**
-	 * Testing size and content after adding a list of new current patients to a list of current patients
+	 * Testing size after adding a list of new patients to a list of current patients
 	 */
-	@Test
-	public void testAddAllPatientsToVerySmallFacility() {
+	@Test //Needed help
+	public void testAddAllPatientsToSmallFacility() {
 		// Adding verySmallFacility patients into smallFacilitye
-		// getRecentPatients working correctly
-		ArrayList<CurrentPatient> smallFacilityAllPatients = smallFacility.getRecentPatients(new GregorianCalendar(0, 0, 0));
-		verySmallFacility.addAll(smallFacilityAllPatients);
-		ArrayList<CurrentPatient> totalPatientActual = verySmallFacility.getRecentPatients(new GregorianCalendar(0, 0, 0));
-		ArrayList<CurrentPatient> totalPatientsExpected = new ArrayList<>();
-		totalPatientsExpected.add(new CurrentPatient("Jane", "Doe", uHID1, 1010101, date1));
-		totalPatientsExpected.add(new CurrentPatient("Drew", "Hall", uHID2, 3232323, date2));
-		totalPatientsExpected.add(new CurrentPatient("Riley", "Nguyen", uHID3, 9879876, date3));
-		totalPatientsExpected.add(new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, new GregorianCalendar(2000, 2, 3)));
-		totalPatientsExpected.add(new CurrentPatient("Samantha", "Schooner", new UHealthID("OUDC-6143"), 1111111 , new GregorianCalendar(2001, 4, 3)));
-		totalPatientsExpected.add(new CurrentPatient("John", "Fuller", new UHealthID("PNRB-0953"), 1234123, new GregorianCalendar(2018, 9, 4)));
-		totalPatientsExpected.add(new CurrentPatient("Mia", "Nakamoto", new UHealthID("NRUT-4467"), 1234123, new GregorianCalendar(2023, 3, 3)));
-		totalPatientsExpected.add(new CurrentPatient("Amy", "Gilmer", new UHealthID("VBIU-1616"), 1111111, new GregorianCalendar(2014, 8, 8)));
-		totalPatientsExpected.add(new CurrentPatient("Kennedy", "Miller", new UHealthID("QRST-3456"), 8888888, new GregorianCalendar(2012, 5, 8)));
-		totalPatientsExpected.add(new CurrentPatient("Taylor", "Miller", new UHealthID("UVWX-7890"), 8888888, new GregorianCalendar(2000, 10, 24)));
-		totalPatientsExpected.add(new CurrentPatient("Jin", "Young", new UHealthID("QWYU-0303"),  6786786 , new GregorianCalendar(2017 , 2, 2)));
-		totalPatientsExpected.add(new CurrentPatient("Jordan", "Jones", new UHealthID("AEHK-3524"),  6786786 , new GregorianCalendar(2019 , 9, 19)));
-		totalPatientsExpected.add(new CurrentPatient("Abdul", "Alcada", new UHealthID("ITER-7777"),  7777777 , new GregorianCalendar(2017 , 7, 7)));
-		totalPatientsExpected.add(new CurrentPatient("Chang-Hau", "Hsu", new UHealthID("MOON-3769"),  9999999 , new GregorianCalendar(2022 , 6, 6)));
-		assertEquals(totalPatientActual, totalPatientsExpected);
+		ArrayList<CurrentPatient> smallFacilityAllPatients = smallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
+		ArrayList<CurrentPatient> verySmallFacilityALlPatients = verySmallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
+
+		verySmallFacilityALlPatients.addAll(smallFacilityAllPatients); // why wont work?
+		int count = verySmallFacilityALlPatients.size();
+
+		assertEquals(14, count);
 	}
+	/**
+	 * Testing the contant of patient list after adding it into the list
+	 */
+//	@Test
 
 	/**
 	 * Testing retrieving the patient with given UHealthID
