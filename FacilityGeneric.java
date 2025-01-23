@@ -162,7 +162,7 @@ public class FacilityGeneric<Type> {
     /**
      * Returns the list of current patients in this facility, sorted according to
      * the provided Comparator.
-     *
+     * 
      * @param cmp - the Comparator to use when sorting
      * @return an ordered list of all patients in this facility
      */
@@ -177,12 +177,12 @@ public class FacilityGeneric<Type> {
 
     /**
      * Performs a SELECTION SORT on the input ArrayList.
-     *
+     * 
      * 1. Finds the smallest item in the list. 
      * 2. Swaps the smallest item with the first item in the list. 
      * 3. Reconsiders the list to be the remaining unsorted portion (second item to Nth item) and 
      *    repeats steps 1, 2, and 3.
-     *
+     * 
      * @param list - to sort
      * @param cmp  - Comparator to use
      */
