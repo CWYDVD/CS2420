@@ -118,7 +118,10 @@ public class FacilityTester {
 	}
 	
 	// Small facility tests -------------------------------------------------------------------------
-	
+
+	/**
+	 * Testing how many current patient that is newer than a given date
+	 */
 	@Test
 	public void testSmallGetRecentPatients() {
 		ArrayList<CurrentPatient> actual = smallFacility.getRecentPatients(new GregorianCalendar(2020, 0, 0));
@@ -126,11 +129,78 @@ public class FacilityTester {
 	}
 	
 	// Add more tests for small facility
-	
-	
-	
+
+	/**
+	 * Testing adding new patient to small facility list
+	 */
+	@Test
+	public void testAddOnePatientToSmallFacility() {
+		// Testing to add an existed patient
+		CurrentPatient newPatient1 = new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, new GregorianCalendar(2000,2,3));
+		assertFalse(smallFacility.addPatient(newPatient1));
+
+		// Testing to add a new patient
+		CurrentPatient newPatient2 = new CurrentPatient("David", "Chen", new UHealthID("CDVD-2003"), 1213800, new GregorianCalendar(2003,9,29));
+		assertTrue(smallFacility.addPatient(newPatient2));
+	}
+
+	/**
+	 * Testing adding a list of new patients to a list of current patients
+	 */
+//	@Test Needed help
+//	public void testAddAllPatientsToSmallFacility() {
+//		// Adding verySmallFacility patients into smallFacilitye
+//		ArrayList<CurrentPatient> smallFacilityAllPatients = smallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
+//		ArrayList<CurrentPatient> verySmallFacilityALlPatients = verySmallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
+//
+//		verySmallFacilityALlPatients.addAll(smallFacilityAllPatients).size(); // why wont work?
+//
+//		assertTrue(smallFacilityAllPatients.addAll(verySmallFacilityALlPatients));
+//	}
+
+	/**
+	 * Testing retrieving the patient with given UHealthID
+	 */
+	@Test
+	public void testSmallFacilityLookUpByUHID() {
+		// If the patient is in the system
+		Patient expectExist = new Patient("Samantha", "Schooner", new UHealthID("OUDC-6143"));
+		Patient actualExist = smallFacility.lookupByUHID(new UHealthID("OUDC-6143"));
+		assertEquals(expectExist, actualExist);
+
+		// If the patient is not in the system
+		Patient expectNotExist = new Patient("David", "Chen", new UHealthID("OUDC-2003"));
+		Patient actualNotExist = smallFacility.lookupByUHID(new UHealthID("OUDC-2003"));
+		assertEquals(null, actualNotExist);
+	}
+
+	/**
+	 * Testing retrieving the numbers patient with give physician
+	 */
+	@Test
+	public void testSmallFacilityLookupByPhysicianCount() {
+		// Check the physician's list of patients of all time
+		ArrayList<CurrentPatient> allPatients = smallFacility.lookupByPhysician(1111111);
+		assertEquals(2, allPatients.size());
+
+		// Check the physician's list of patients after removed all of patients
+		allPatients.remove(0);
+		allPatients.remove(0);
+		assertEquals(0, allPatients.size());
+	}
+
+	/**
+	 * Testing retrieving the name of patients with give physician
+	 */
+	@Test
+	public void testSmallFaLookupByPhysicianPatient() {
+		Patient expectedPatient = new Patient("Amy", "Gilmer", new UHealthID("VBIU-1616"));
+		ArrayList<CurrentPatient> actualPatients = verySmallFacility.lookupByPhysician(9879876);
+		assertEquals(expectedPatient, actualPatients.get(0));
+	}
+
 	// Helper methods ------------------------------------------------------------
-	
+
 	/**
 	 * Generates unique UHealthIDs (valid for up to 260,000 IDs).
 	 * 
