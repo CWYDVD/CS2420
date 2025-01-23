@@ -2,6 +2,7 @@ package assign02;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 /**
  * This class represents a record of patients that have visited a UHealth
@@ -11,7 +12,6 @@ import java.util.GregorianCalendar;
  * @version January 20, 2024
  */
 public class Facility {
-
 	private ArrayList<CurrentPatient> patientList;
 
 	/**
@@ -29,7 +29,11 @@ public class Facility {
 	 *         false if the patient was not added because they already exist in the record
 	 */
 	public boolean addPatient(CurrentPatient patient) {
-		patientList.
+		if (! (patientList.contains(patient))) {
+			patientList.add(patient);
+			return true;
+		}
+
 		return false;
 	}
 	
@@ -50,7 +54,12 @@ public class Facility {
 	 *         exists in the record
 	 */
 	public CurrentPatient lookupByUHID(UHealthID patientID) {
-		// TODO: Fill in the method according to the contract.
+		for (CurrentPatient patient : patientList) {
+			if (patient.getUHealthID().equals(patientID)) {
+				return patient;
+			}
+		}
+
 		return null;
 	}
 
@@ -62,8 +71,14 @@ public class Facility {
 	 *         or an empty list if no such patients exist in the record
 	 */
 	public ArrayList<CurrentPatient> lookupByPhysician(int physician) {
-		// TODO: Fill in the method according to the contract.
-		return null;
+		ArrayList<CurrentPatient> physiciansPatients = new ArrayList<CurrentPatient>();
+
+		for (CurrentPatient patient : patientList) {
+			if (patient.getPhysician() == physician)
+				physiciansPatients.add(patient);
+		}
+
+		return physiciansPatients;
 	}
 
 	/**
@@ -77,8 +92,15 @@ public class Facility {
 	 *         or an empty list if no such patients exist in the record
 	 */
 	public ArrayList<CurrentPatient> getRecentPatients(GregorianCalendar date) {
-		// TODO: Fill in the method according to the contract.
-		return null;
+		ArrayList<CurrentPatient> recentPatients = new ArrayList<CurrentPatient>();
+
+		for (CurrentPatient patient : patientList) {
+			if (date.compareTo(patient.getLastVisit()) < 0) {
+				recentPatients.add(patient);
+			}
+		}
+
+		return recentPatients;
 	}
 
 	/**
@@ -91,8 +113,13 @@ public class Facility {
 	 * 	       or an empty list if no patients exist in the record
 	 */
 	public ArrayList<Integer> getPhysicianList() {
-		// TODO: Fill in the method according to the contract.
-		return null;
+		HashSet<Integer> everyPhysicians = new HashSet<>();
+
+		for (CurrentPatient patient : patientList) {
+			everyPhysicians.add(patient.getPhysician());
+		}
+
+		return new ArrayList<Integer>(everyPhysicians);
 	}
 
 	/**
@@ -105,7 +132,12 @@ public class Facility {
 	 * @param physician - identifier of patient's new physician
 	 */
 	public void setPhysician(UHealthID patientID, int physician) {
-		// TODO: Fill in the method according to the contract.
+		for (CurrentPatient patient : patientList) {
+			if (patient.getUHealthID().equals(patientID)) {
+				patient.updatePhysician(physician);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -118,6 +150,11 @@ public class Facility {
 	 * @param date - date of last visit
 	 */
 	public void setLastVisit(UHealthID patientID, GregorianCalendar date) {
-		// TODO: Fill in the method according to the contract.
+		for (CurrentPatient patient : patientList) {
+			if (patient.getUHealthID().equals(patientID)) {
+				patient.updateLastVisit(date);
+				break;
+			}
+		}
 	}
 }
