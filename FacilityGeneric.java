@@ -1,6 +1,7 @@
 package assign02;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
@@ -155,6 +156,47 @@ public class FacilityGeneric<Type> {
                 patient.updateLastVisit(date);
                 break;
             }
+        }
+    }
+
+    /**
+     * Returns the list of current patients in this facility, sorted according to
+     * the provided Comparator.
+     *
+     * @param cmp - the Comparator to use when sorting
+     * @return an ordered list of all patients in this facility
+     */
+    public ArrayList<CurrentPatientGeneric<Type>> getOrderedPatients(Comparator<CurrentPatientGeneric<Type>> cmp) {
+        ArrayList<CurrentPatientGeneric<Type>> patientListCopy = new ArrayList<CurrentPatientGeneric<Type>>();
+        for(CurrentPatientGeneric<Type> patient : patientList) {
+            patientListCopy.add(patient);
+        }
+        sort(patientListCopy, cmp);
+        return patientListCopy;
+    }
+
+    /**
+     * Performs a SELECTION SORT on the input ArrayList.
+     *
+     * 1. Finds the smallest item in the list. 
+     * 2. Swaps the smallest item with the first item in the list. 
+     * 3. Reconsiders the list to be the remaining unsorted portion (second item to Nth item) and 
+     *    repeats steps 1, 2, and 3.
+     *
+     * @param list - to sort
+     * @param cmp  - Comparator to use
+     */
+    private static <ListType> void sort(ArrayList<ListType> list, Comparator<ListType> cmp) {
+        for(int i = 0; i < list.size() - 1; i++) {
+            int j, minIndex;
+            for(j = i + 1, minIndex = i; j < list.size(); j++) {
+                if(cmp.compare(list.get(j), list.get(minIndex)) < 0) {
+                    minIndex = j;
+                }
+            }
+            ListType temp = list.get(i);
+            list.set(i, list.get(minIndex));
+            list.set(minIndex, temp);
         }
     }
 }
