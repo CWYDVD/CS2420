@@ -1,4 +1,4 @@
-import assign02.*;
+package assign02;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import java.util.*;
 public class FacilityTester {
 
 	private Facility emptyFacility, verySmallFacility, smallFacility;
-	private Facility largeFacility;
+	private Facility largeFacility, largeFacilityCopy;
 	private UHealthID uHID1, uHID2, uHID3;
 	private GregorianCalendar date1, date2, date3;
 	
@@ -49,21 +49,23 @@ public class FacilityTester {
 		// (HINT: For a larger facility, use the helpers at the end of this file to
 		//        generate names, IDs, and dates.)
 
-		// How to test on largeFacility if we are having random names and id? do we just check numbers?
+		// Modify the generate name method so that I can generate 2 exact large facility list
+		Random rng = new Random();
+		rng.setSeed(10);
 		largeFacility = new Facility();
-		String[] firstNames = generateNames(1000);
-		String[] lastNames = generateNames(1000);
+		String[] firstNames = generateNames(1000, rng);
+		String[] lastNames = generateNames(1000, rng);
 		UHealthID[] UHealthIDs = generateUHIDs(1000);
 		GregorianCalendar[] dates = generateDates(1000);
-		Random random = new Random();
-		for (int i = 1; i <= 1000; i++) {
-			int physician = 1000000 + random.nextInt(9000000);
+		Random randomDigits = new Random();
+		randomDigits.setSeed(10);
+		for (int i = 0; i < 1000; i++) {
+			int physician = 1000000 + randomDigits.nextInt(9000000);
 			largeFacility.addPatient(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
 		}
 	}
-	
-	// Empty Facility tests --------------------------------------------------------
 
+	// Empty Facility tests --------------------------------------------------------
 	@Test
 	public void testEmptyLookupUHID() {
 		assertNull(emptyFacility.lookupByUHID(uHID1));
@@ -144,7 +146,7 @@ public class FacilityTester {
 	 * Testing adding new patient to small facility list
 	 */
 	@Test
-	public void testAddOnePatientToSmallFacility() {
+	public void testAddPatientToSmallFacility() {
 		// Testing to add an existed patient
 		CurrentPatient newPatient1 = new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, new GregorianCalendar(2000,2,3));
 		assertFalse(smallFacility.addPatient(newPatient1));
@@ -155,23 +157,32 @@ public class FacilityTester {
 	}
 
 	/**
-	 * Testing size after adding a list of new patients to a list of current patients
+	 * Testing size and content after adding a list of new current patients to a list of current patients
 	 */
-	@Test //Needed help
-	public void testAddAllPatientsToSmallFacility() {
+	@Test
+	public void testAddAllSmallFacility() {
 		// Adding verySmallFacility patients into smallFacilitye
-		ArrayList<CurrentPatient> smallFacilityAllPatients = smallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
-		ArrayList<CurrentPatient> verySmallFacilityALlPatients = verySmallFacility.getRecentPatients(new GregorianCalendar(200, 0, 0));
-
-		verySmallFacilityALlPatients.addAll(smallFacilityAllPatients); // why wont work?
-		int count = verySmallFacilityALlPatients.size();
-
-		assertEquals(14, count);
+		// getRecentPatients working correctly
+		ArrayList<CurrentPatient> smallFacilityAllPatients = smallFacility.getRecentPatients(new GregorianCalendar(0, 0, 0));
+		verySmallFacility.addAll(smallFacilityAllPatients);
+		ArrayList<CurrentPatient> totalPatientActual = verySmallFacility.getRecentPatients(new GregorianCalendar(0, 0, 0));
+		ArrayList<CurrentPatient> totalPatientsExpected = new ArrayList<>();
+		totalPatientsExpected.add(new CurrentPatient("Jane", "Doe", uHID1, 1010101, date1));
+		totalPatientsExpected.add(new CurrentPatient("Drew", "Hall", uHID2, 3232323, date2));
+		totalPatientsExpected.add(new CurrentPatient("Riley", "Nguyen", uHID3, 9879876, date3));
+		totalPatientsExpected.add(new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, new GregorianCalendar(2000, 2, 3)));
+		totalPatientsExpected.add(new CurrentPatient("Samantha", "Schooner", new UHealthID("OUDC-6143"), 1111111 , new GregorianCalendar(2001, 4, 3)));
+		totalPatientsExpected.add(new CurrentPatient("John", "Fuller", new UHealthID("PNRB-0953"), 1234123, new GregorianCalendar(2018, 9, 4)));
+		totalPatientsExpected.add(new CurrentPatient("Mia", "Nakamoto", new UHealthID("NRUT-4467"), 1234123, new GregorianCalendar(2023, 3, 3)));
+		totalPatientsExpected.add(new CurrentPatient("Amy", "Gilmer", new UHealthID("VBIU-1616"), 1111111, new GregorianCalendar(2014, 8, 8)));
+		totalPatientsExpected.add(new CurrentPatient("Kennedy", "Miller", new UHealthID("QRST-3456"), 8888888, new GregorianCalendar(2012, 5, 8)));
+		totalPatientsExpected.add(new CurrentPatient("Taylor", "Miller", new UHealthID("UVWX-7890"), 8888888, new GregorianCalendar(2000, 10, 24)));
+		totalPatientsExpected.add(new CurrentPatient("Jin", "Young", new UHealthID("QWYU-0303"),  6786786 , new GregorianCalendar(2017 , 2, 2)));
+		totalPatientsExpected.add(new CurrentPatient("Jordan", "Jones", new UHealthID("AEHK-3524"),  6786786 , new GregorianCalendar(2019 , 9, 19)));
+		totalPatientsExpected.add(new CurrentPatient("Abdul", "Alcada", new UHealthID("ITER-7777"),  7777777 , new GregorianCalendar(2017 , 7, 7)));
+		totalPatientsExpected.add(new CurrentPatient("Chang-Hau", "Hsu", new UHealthID("MOON-3769"),  9999999 , new GregorianCalendar(2022 , 6, 6)));
+		assertEquals(totalPatientActual, totalPatientsExpected);
 	}
-	/**
-	 * Testing the contant of patient list after adding it into the list
-	 */
-//	@Test
 
 	/**
 	 * Testing retrieving the patient with given UHealthID
@@ -310,6 +321,134 @@ public class FacilityTester {
 		assertEquals(lastDayOf2022Expected, lastDayOf2022Acutal);
 	}
 
+	// Large facility tests -------------------------------------------------------------------------
+	/**
+	 * Testing on adding a patient to the list
+	 */
+	@Test
+	public void testAddPatientLargeFacility() {
+		// Creating a same exact large facility arraylist
+		Random rng = new Random();
+		rng.setSeed(10);
+		ArrayList<CurrentPatient> largeFacilityCopy = new ArrayList<CurrentPatient>();
+		String[] firstNames = generateNames(1000, rng);
+		String[] lastNames = generateNames(1000, rng);
+		UHealthID[] UHealthIDs = generateUHIDs(1000);
+		GregorianCalendar[] dates = generateDates(1000);
+		Random randomDigits = new Random();
+		randomDigits.setSeed(10);
+		for (int i = 0; i < 1000; i++) {
+			int physician = 1000000 + randomDigits.nextInt(9000000);
+			largeFacilityCopy.add(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
+		}
+
+		// Testing adding a non-existed patient
+		CurrentPatient newPatient = new CurrentPatient("Jane", "Doe", uHID1, 1010101, date1);
+		assertTrue(largeFacility.addPatient(newPatient));
+
+		// Testing add an existed patient
+		CurrentPatient existedPatient = largeFacilityCopy.get(0);
+		assertFalse(largeFacility.addPatient(existedPatient));
+	}
+
+	/**
+	 * Testing adding all patient from very small facility to large facility
+	 */
+	@Test
+	public void testAddAllLargeFacility() {
+		// Creating a same exact large facility arraylist
+		Random rng = new Random();
+		rng.setSeed(10);
+		ArrayList<CurrentPatient> largeFacilityCopy = new ArrayList<CurrentPatient>();
+		String[] firstNames = generateNames(1000, rng);
+		String[] lastNames = generateNames(1000, rng);
+		UHealthID[] UHealthIDs = generateUHIDs(1000);
+		GregorianCalendar[] dates = generateDates(1000);
+		Random randomDigits = new Random();
+		randomDigits.setSeed(10);
+		for (int i = 0; i < 1000; i++) {
+			int physician = 1000000 + randomDigits.nextInt(9000000);
+			largeFacilityCopy.add(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
+		}
+
+		// Creating a very small facility arraylist
+		ArrayList<CurrentPatient> verySmallFacility = new ArrayList<>();
+		verySmallFacility.add(new CurrentPatient("Jane", "Doe", uHID1, 1010101, date1));
+		verySmallFacility.add(new CurrentPatient("Drew", "Hall", uHID2, 3232323, date2));
+		verySmallFacility.add(new CurrentPatient("Riley", "Nguyen", uHID3, 9879876, date3));
+
+		largeFacility.addAll(verySmallFacility);
+		ArrayList<CurrentPatient> largeFacilityList = largeFacility.getRecentPatients(new GregorianCalendar(0, 0, 0));
+		largeFacilityCopy.addAll(verySmallFacility);
+		assertEquals(largeFacilityCopy, largeFacilityList);
+	}
+
+	@Test
+	/**
+	 * Testing looking up by uid for large facility
+	 */
+	public void testlookupByUHIDLargeFacility() {
+		// Creating a same exact large facility arraylist
+		Random rng = new Random();
+		rng.setSeed(10);
+		ArrayList<CurrentPatient> largeFacilityCopy = new ArrayList<CurrentPatient>();
+		String[] firstNames = generateNames(1000, rng);
+		String[] lastNames = generateNames(1000, rng);
+		UHealthID[] UHealthIDs = generateUHIDs(1000);
+		GregorianCalendar[] dates = generateDates(1000);
+		Random randomDigits = new Random();
+		randomDigits.setSeed(10);
+		for (int i = 0; i < 1000; i++) {
+			int physician = 1000000 + randomDigits.nextInt(9000000);
+			largeFacilityCopy.add(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physician, dates[i]));
+		}
+
+		// Patient exists
+		UHealthID lookUpUHealthID = UHealthIDs[2];
+		assertEquals(largeFacility.lookupByUHID(lookUpUHealthID), largeFacilityCopy.get(2));
+
+		// Patient does not exist
+		UHealthID lookUpUHealthID2 = new UHealthID("ZZZZ-1111");
+		assertEquals(null, largeFacility.lookupByUHID(lookUpUHealthID2));
+	}
+
+	/**
+	 * Testing looking up patients with give physician
+	 */
+	@Test
+	public void testlookupByPhysicianLargeFacility() {
+		// Creating a same exact large facility arraylist
+		Random rng = new Random();
+		rng.setSeed(10);
+		Facility presetFacility = new Facility();
+		String[] firstNames = generateNames(1000, rng);
+		String[] lastNames = generateNames(1000, rng);
+		UHealthID[] UHealthIDs = generateUHIDs(1000);
+		GregorianCalendar[] dates = generateDates(1000);
+		int[] physicians = new int[1000];
+		for (int i = 0; i < 1000; i++)
+			physicians[i] = rng.nextInt();
+		for (int i = 0; i < 1000; i++)
+			presetFacility.addPatient(new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physicians[i], dates[i]));
+
+		rng.setSeed(System.nanoTime());
+		int i = rng.nextInt(1000);
+		CurrentPatient expected = new CurrentPatient(firstNames[i], lastNames[i], UHealthIDs[i], physicians[i], dates[i]);
+
+		assertTrue(presetFacility.lookupByPhysician(physicians[i]).contains(expected));
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// Helper methods ------------------------------------------------------------
 
@@ -347,9 +486,8 @@ public class FacilityTester {
 	 * @param howMany - names to generate
 	 * @return an array of names
 	 */
-	private String[] generateNames(int howMany) {
+	private String[] generateNames(int howMany, Random rng) {
 		String[] names = new String[howMany];
-		Random rng = new Random();
 		for(int i = 0; i < howMany; i++)
 			names[i] = "" + (char)('A' + rng.nextInt(26)) + (char)('a' + rng.nextInt(26))
 					   + (char)('a' + rng.nextInt(26)) + (char)('a' + rng.nextInt(26));
