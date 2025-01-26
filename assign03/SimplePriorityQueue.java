@@ -42,7 +42,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     queue
     */
     public boolean contains(E item) {
-        return binarySearch(item) != -1;
+        return cmp.compare(arr[binarySearch(item)], item) == 0;
     };
     /**
     * Indicates whether this priority contains all of the specified elements.
@@ -67,7 +67,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     */
     public E deleteMax() throws NoSuchElementException {
         if(this.size == 0) throw new NoSuchElementException();
-        return(arr[--this.size]);
+        return arr[--this.size];
     }
     /**
     * Retrieves, but does not remove, the maximum element in this priority
@@ -88,22 +88,19 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     */
     @SuppressWarnings("unchecked")
     public void insert(E item){
-        this.size ++;
-        if (this.size == arr.length) {
-            E[] newArr = (E[]) new Object[arr.length * 2];
-            for (int i = 0; i < this.size; i++)
-                newArr[i] = arr[i];
+        if (this.size == this.arr.length) {
+            E[] newArr = (E[]) new Object[this.arr.length * 2];
+            for (int i = 0; i < this.arr.length; i++)
+                newArr[i] = this.arr[i];
             this.arr = newArr;
             this.insert(item);
         } else {
             int index = binarySearch(item);
-            E buffer = arr[index];
-            arr[index] = item;
-            for (int i = index + 1; i < this.size; i++) {
-                arr[i] = buffer;
-                buffer = arr[i+1];
-            }
+            for (int i = this.size; i > index; i--)
+                this.arr[i] = this.arr[i-1];
+            this.arr[index] = item;
         }
+        this.size ++;
     };
     /**
     * Inserts the specified elements into this priority queue.
@@ -120,7 +117,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     * @return true if this priority queue is empty; false otherwise
     */
     public boolean isEmpty() {
-        return (this.size == 0);
+        return this.size == 0;
     };
     /**
     * Determines the number of elements in this priority queue.
@@ -128,28 +125,27 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     * @return the number of elements in this priority queue
     */
     public int size() {
-        return (this.size);
+        return this.size;
     };
 
     private int binarySearch(E target) {
-        E val = arr[size/2];
-        if (val.equals(target))
-            return (size/2);
-        else if (cmp.compare(target, val) > 0)
-            return(binarySearchRecursive(target, size/2 + 1, size));
-        else
-            return(binarySearchRecursive(target, 0, size/2));
+        if (this.size == 0) return 0;
+        return binarySearchRecursive(target, 0, this.size);
     }
 
     private int binarySearchRecursive(E target, int i, int j) {
-        if (i == j) 
-            return(-1);
-        int index = i/2 + j/2;
+        if (i >= j) 
+            return(j);
+        int index = i + (j - i)/2;
         E val = arr[index];
-        if (cmp.compare(target, val) == 0)
+        if (val == null)
+            return(i);
+        
+        int compare = cmp.compare(target, val);
+        if (compare == 0)
             return (index);
-        else if (cmp.compare(target, val) > 0)
-            return(binarySearchRecursive(target, index, j));
+        else if (compare > 0)
+            return(binarySearchRecursive(target, index + 1, j));
         else
             return(binarySearchRecursive(target, i, index));
     }
