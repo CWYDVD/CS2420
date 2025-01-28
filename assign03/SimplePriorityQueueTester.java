@@ -23,6 +23,8 @@ public class SimplePriorityQueueTester {
     private SimplePriorityQueue<Integer> intQ10000;
     private SimplePriorityQueue<Integer> intQ1000000;
 
+    private Collection<Integer> desiredIntegers;
+
     @BeforeEach
     public void setup() throws Exception {
         intQ = new SimplePriorityQueue<>();
@@ -113,12 +115,21 @@ public class SimplePriorityQueueTester {
         assertTrue(intQ100.contains(99));
         assertTrue(intQ10000.contains(2000));
         assertTrue(intQ1000000.contains(999999));
-
+        
         // Testing with a set of elements (containsAll)
-        Collection<Integer> coll1 = Arrays.asList(1, 2, 3);
-        assertTrue(intQ100.containsAll(coll1));
+
+        Collection<Integer> desiredIntegers = new ArrayList<>();
+        for (int i = 0; i < 100; i++)
+            desiredIntegers.add(i);
+        assertTrue(intQ100.containsAll(desiredIntegers));
+
+        // Collection<String> coll2 = strQ;
+        // assertTrue(strQ.containsAll(coll2);
+
+        // assertFalse(intQ.containsAll(coll2);
 
         // Testing with a large set of elements
+        
     }
 
     @Test
