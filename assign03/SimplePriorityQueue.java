@@ -38,11 +38,9 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     }
 
     /**
-     * Indicates whether this priority contains all of the specified elements.
+     * Indicates whether this priority queue contains the specified element.
      *
-     * @param coll - the collection of elements to be checked for containment in this priority queue
-     * @return true if this priority queue contains every element in the specified collection;
-     *         otherwise, returns false
+     * @param item - the element to be checked for containment in this priority queue
      */
     public boolean contains(E item) {
         return cmp.compare(arr[binarySearch(item)], item) == 0;
