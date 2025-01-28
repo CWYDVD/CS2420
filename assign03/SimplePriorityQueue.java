@@ -57,8 +57,15 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     specified collection;
     * otherwise, returns false
     */
+    // public boolean containsAll(Collection<? extends E> coll){
+    //     for (E item : arr)
+    //         if (! this.contains(item))
+    //             return false;
+    //     return true;
+    // }
+
     public boolean containsAll(Collection<? extends E> coll){
-        for (E item : arr)
+        for (E item : coll)
             if (! this.contains(item))
                 return false;
         return true;
