@@ -67,10 +67,12 @@ public class SimplePriorityQueueTester {
         // Testing on finding size
         assertEquals(8, intQ.size());
         assertEquals(8, intQ.findMax());
+        
         // Testing clear() function
         intQ.clear();
         assertEquals(0, intQ.size());
         assertThrows(NoSuchElementException.class, () -> {intQ.findMax();});
+        
         // Continue testing isEmpty function
         assertTrue(intQ.isEmpty());
 
@@ -190,6 +192,7 @@ public class SimplePriorityQueueTester {
         lengthQ.insert("cc");
         assertEquals("a", lengthQ.findMax());
     }    
+    
     @Test
     public void testMax() {
         // Test findMax and deleteMax on integer queue
@@ -214,6 +217,7 @@ public class SimplePriorityQueueTester {
         assertEquals(1, singleQ.deleteMax());
         assertTrue(singleQ.isEmpty());
     }    
+    
     @Test
     public void testInsert() {
         // Test inserting into empty queue
@@ -221,28 +225,43 @@ public class SimplePriorityQueueTester {
         newQ.insert(5);
         assertEquals(1, newQ.size());
         assertEquals(5, newQ.findMax());
-        
+
         // Test inserting multiple elements
         newQ.insert(3);
         newQ.insert(7);
         newQ.insert(1);
         assertEquals(4, newQ.size());
         assertEquals(7, newQ.findMax());
-        
+
         // Test inserting duplicate elements
         newQ.insert(7);
         assertEquals(5, newQ.size());
         assertEquals(7, newQ.findMax());
-        
+
         // Test inserting null
         assertThrows(NullPointerException.class, () -> newQ.insert(null));
-        
+
+        // Testing larger Size
+        intQ100.insert(99);
+        assertEquals(101, intQ100.size());
+
+        intQ10000.insert(99);
+        assertEquals(10001, intQ10000.size());
+
+        intQ1000000.insert(100000);
+        assertEquals(1000001, intQ1000000.size());
+
         // Test insertAll
         ArrayList<Integer> toAdd = new ArrayList<>(Arrays.asList(10, 12, 8));
         newQ.insertAll(toAdd);
         assertEquals(8, newQ.size());
         assertEquals(12, newQ.findMax());
+
+        ArrayList<Integer> toAddLarger = new ArrayList<>(Arrays.asList(8, 10, 12, 1000, 1222, 10202, 111121, 10234));
+        intQ10000.insertAll(toAddLarger);
+        assertEquals(10008, intQ10000.size());
     }
+    
     @Test
     public void testSize() {
         // Test size of empty queue
@@ -271,6 +290,7 @@ public class SimplePriorityQueueTester {
         assertEquals(10000, intQ10000.size());
         assertEquals(1000000, intQ1000000.size());
     }    
+    
     @Test
     public void testBinarySearch() {
         // This test indirectly tests the binary search functionality
