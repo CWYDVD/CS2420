@@ -67,12 +67,12 @@ public class SimplePriorityQueueTester {
         // Testing on finding size
         assertEquals(8, intQ.size());
         assertEquals(8, intQ.findMax());
-        
+
         // Testing clear() function
         intQ.clear();
         assertEquals(0, intQ.size());
         assertThrows(NoSuchElementException.class, () -> {intQ.findMax();});
-        
+
         // Continue testing isEmpty function
         assertTrue(intQ.isEmpty());
 
@@ -183,41 +183,41 @@ public class SimplePriorityQueueTester {
         revQ.insert(5);
         revQ.insert(3);
         assertEquals(1, revQ.findMax());
-        
+
         // Test with strings using length comparator
         Comparator<String> lengthComp = (s1, s2) -> s1.length() - s2.length();
         SimplePriorityQueue<String> lengthQ = new SimplePriorityQueue<>(lengthComp);
         lengthQ.insert("a");
         lengthQ.insert("bbb");
         lengthQ.insert("cc");
-        assertEquals("a", lengthQ.findMax());
-    }    
-    
+        assertEquals("bbb", lengthQ.findMax());
+    }
+
     @Test
     public void testMax() {
         // Test findMax and deleteMax on integer queue
         assertEquals(8, intQ.findMax());
         assertEquals(8, intQ.deleteMax());
         assertEquals(7, intQ.findMax());
-        
+
         // Test on string queue
         assertEquals("8", strQ.findMax());
         assertEquals("8", strQ.deleteMax());
         assertEquals("7", strQ.findMax());
-        
+
         // Test on empty queue
         SimplePriorityQueue<Integer> emptyQ = new SimplePriorityQueue<>();
         assertThrows(NoSuchElementException.class, () -> emptyQ.findMax());
         assertThrows(NoSuchElementException.class, () -> emptyQ.deleteMax());
-        
+
         // Test on queue with one element
         SimplePriorityQueue<Integer> singleQ = new SimplePriorityQueue<>();
         singleQ.insert(1);
         assertEquals(1, singleQ.findMax());
         assertEquals(1, singleQ.deleteMax());
         assertTrue(singleQ.isEmpty());
-    }    
-    
+    }
+
     @Test
     public void testInsert() {
         // Test inserting into empty queue
@@ -259,45 +259,48 @@ public class SimplePriorityQueueTester {
 
         ArrayList<Integer> toAddLarger = new ArrayList<>(Arrays.asList(8, 10, 12, 1000, 1222, 10202, 111121, 10234));
         intQ10000.insertAll(toAddLarger);
-        assertEquals(10008, intQ10000.size());
+        intQ1000000.insertAll(toAddLarger);
+        // Adding 8, 10009 because we add 1 in the previous, same with Q1000000
+        assertEquals(10009, intQ10000.size());
+        assertEquals(1000009, intQ1000000.size());
     }
-    
+
     @Test
     public void testSize() {
         // Test size of empty queue
         SimplePriorityQueue<Integer> emptyQ = new SimplePriorityQueue<>();
         assertEquals(0, emptyQ.size());
         assertTrue(emptyQ.isEmpty());
-        
+
         // Test size after insertions
         emptyQ.insert(1);
         assertEquals(1, emptyQ.size());
         assertFalse(emptyQ.isEmpty());
-        
+
         emptyQ.insert(2);
         assertEquals(2, emptyQ.size());
-        
+
         // Test size after deletions
         emptyQ.deleteMax();
         assertEquals(1, emptyQ.size());
-        
+
         emptyQ.deleteMax();
         assertEquals(0, emptyQ.size());
         assertTrue(emptyQ.isEmpty());
-        
+
         // Test size with larger number of elements
         assertEquals(100, intQ100.size());
         assertEquals(10000, intQ10000.size());
         assertEquals(1000000, intQ1000000.size());
-    }    
-    
+    }
+
     @Test
     public void testBinarySearch() {
         // This test indirectly tests the binary search functionality
         // through insert operations that should maintain sorted order
-        
+
         SimplePriorityQueue<Integer> testQ = new SimplePriorityQueue<>();
-        
+
         // Insert elements in random order
         testQ.insert(5);
         testQ.insert(3);
@@ -306,7 +309,7 @@ public class SimplePriorityQueueTester {
         testQ.insert(6);
         testQ.insert(4);
         testQ.insert(2);
-        
+
         // Verify elements come out in sorted order
         assertEquals(7, testQ.deleteMax());
         assertEquals(6, testQ.deleteMax());
@@ -315,7 +318,7 @@ public class SimplePriorityQueueTester {
         assertEquals(3, testQ.deleteMax());
         assertEquals(2, testQ.deleteMax());
         assertEquals(1, testQ.deleteMax());
-        
+
         // Verify queue is empty
         assertTrue(testQ.isEmpty());
         assertEquals(0, testQ.size());
