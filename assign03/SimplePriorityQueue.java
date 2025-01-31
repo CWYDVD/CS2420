@@ -3,6 +3,7 @@ package assign03;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+
 /**
  * This class is a simple priority queue data structure which store an associated type of object according to a given Comparator (default natural ordering using Comparable). Only the maximum object can be accessed or deleted.
  *
@@ -15,7 +16,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     private E[] arr;
     private int size;
     private Comparator<? super E> cmp;
-    
+
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue(){
         this((Comparator<? super E>) Comparator.naturalOrder());
@@ -58,7 +59,6 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
         for (E item : coll)
             if (! this.contains(item))
                 return false;
-        
         return true;
     }
 
@@ -70,7 +70,6 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
      */
     public E deleteMax() throws NoSuchElementException {
         if(this.size == 0) throw new NoSuchElementException();
-        
         return arr[--this.size];
     }
 
@@ -84,7 +83,6 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     public E findMax() throws NoSuchElementException{
         if (this.size == 0)
             throw new NoSuchElementException();
-        
         return arr[this.size - 1];
     }
 
