@@ -110,21 +110,67 @@ public class SimplePriorityQueueTester {
         assertTrue(intQ100.contains(99));
         assertTrue(intQ10000.contains(2000));
         assertTrue(intQ1000000.contains(999999));
-        
-        // Testing with a set of elements (containsAll)
 
-        Collection<Integer> desiredIntegers = new ArrayList<>();
-        for (int i = 0; i < 100; i++)
-            desiredIntegers.add(i);
-        assertTrue(intQ100.containsAll(desiredIntegers));
+        // (containsAll)
+        // Testing with a set of consecutive elements
+        Collection<Integer> collInt = new ArrayList<Integer>();
+        collInt.add(1);
+        collInt.add(2);
+        collInt.add(3);
+        assertTrue(intQ.containsAll(collInt));
 
-        // Collection<String> coll2 = strQ;
-        // assertTrue(strQ.containsAll(coll2);
+        Collection<String> collStr = new ArrayList<String>();
+        collStr.add("1");
+        collStr.add("2");
+        collStr.add("3");
+        assertTrue(strQ.containsAll(collStr));
 
-        // assertFalse(intQ.containsAll(coll2);
+        Collection<Character> collChar = new ArrayList<Character>();
+        collChar.add('1');
+        collChar.add('2');
+        collChar.add('3');
+        assertTrue(charQ.containsAll(collChar));
+
+        // Testing with non consecutive elements on median size
+        Collection<Integer> collNotCon = new ArrayList<Integer>();
+        collNotCon.add(5);
+        collNotCon.add(22);
+        collNotCon.add(55);
+        assertTrue(intQ100.containsAll(collNotCon));
 
         // Testing with a large set of elements
-        
+        Collection<Integer> collLarge = new ArrayList<Integer>();
+        collLarge.add(5);
+        collLarge.add(22);
+        collLarge.add(55);
+        collLarge.add(67);
+        collLarge.add(80);
+        collLarge.add(92);
+        collLarge.add(99);
+        collLarge.add(200);
+        collLarge.add(300);
+        collLarge.add(450);
+        collLarge.add(500);
+        collLarge.add(9998);
+        assertTrue(intQ10000.containsAll(collLarge));
+
+        Collection<Integer> collLarge1000000 = new ArrayList<Integer>();
+        collLarge1000000.add(1000);
+        collLarge1000000.add(2000);
+        collLarge1000000.add(10003);
+        collLarge1000000.add(11130);
+        collLarge1000000.add(44010);
+        collLarge1000000.add(55010);
+        collLarge1000000.add(66010);
+        collLarge1000000.add(79590);
+        collLarge1000000.add(88891);
+        collLarge1000000.add(91911);
+        collLarge1000000.add(192919);
+        collLarge1000000.add(200303);
+        collLarge1000000.add(600010);
+        collLarge1000000.add(999190);
+        collLarge1000000.add(999999);
+        assertTrue(intQ1000000.containsAll(collLarge1000000));
     }
 
     @Test
