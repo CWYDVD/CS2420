@@ -62,11 +62,6 @@ public class SimplePriorityQueueTester {
     }
 
     @Test
-    public void testAltComparator() {
-
-    }
-
-    @Test
     public void testClear() {
         // assume findMax/Size function working correctly
         // Testing on finding size
@@ -133,22 +128,130 @@ public class SimplePriorityQueueTester {
     }
 
     @Test
+    public void testAltComparator() {
+        // Test priority queue with custom comparator (reverse order)
+        SimplePriorityQueue<Integer> revQ = new SimplePriorityQueue<>(Comparator.reverseOrder());
+        revQ.insert(1);
+        revQ.insert(5);
+        revQ.insert(3);
+        assertEquals(1, revQ.findMax());
+        
+        // Test with strings using length comparator
+        Comparator<String> lengthComp = (s1, s2) -> s1.length() - s2.length();
+        SimplePriorityQueue<String> lengthQ = new SimplePriorityQueue<>(lengthComp);
+        lengthQ.insert("a");
+        lengthQ.insert("bbb");
+        lengthQ.insert("cc");
+        assertEquals("a", lengthQ.findMax());
+    }    
+    @Test
     public void testMax() {
-
-    }
-
+        // Test findMax and deleteMax on integer queue
+        assertEquals(8, intQ.findMax());
+        assertEquals(8, intQ.deleteMax());
+        assertEquals(7, intQ.findMax());
+        
+        // Test on string queue
+        assertEquals("8", strQ.findMax());
+        assertEquals("8", strQ.deleteMax());
+        assertEquals("7", strQ.findMax());
+        
+        // Test on empty queue
+        SimplePriorityQueue<Integer> emptyQ = new SimplePriorityQueue<>();
+        assertThrows(NoSuchElementException.class, () -> emptyQ.findMax());
+        assertThrows(NoSuchElementException.class, () -> emptyQ.deleteMax());
+        
+        // Test on queue with one element
+        SimplePriorityQueue<Integer> singleQ = new SimplePriorityQueue<>();
+        singleQ.insert(1);
+        assertEquals(1, singleQ.findMax());
+        assertEquals(1, singleQ.deleteMax());
+        assertTrue(singleQ.isEmpty());
+    }    
     @Test
     public void testInsert() {
-
+        // Test inserting into empty queue
+        SimplePriorityQueue<Integer> newQ = new SimplePriorityQueue<>();
+        newQ.insert(5);
+        assertEquals(1, newQ.size());
+        assertEquals(5, newQ.findMax());
+        
+        // Test inserting multiple elements
+        newQ.insert(3);
+        newQ.insert(7);
+        newQ.insert(1);
+        assertEquals(4, newQ.size());
+        assertEquals(7, newQ.findMax());
+        
+        // Test inserting duplicate elements
+        newQ.insert(7);
+        assertEquals(5, newQ.size());
+        assertEquals(7, newQ.findMax());
+        
+        // Test inserting null
+        assertThrows(NullPointerException.class, () -> newQ.insert(null));
+        
+        // Test insertAll
+        ArrayList<Integer> toAdd = new ArrayList<>(Arrays.asList(10, 12, 8));
+        newQ.insertAll(toAdd);
+        assertEquals(8, newQ.size());
+        assertEquals(12, newQ.findMax());
     }
-
     @Test
     public void testSize() {
-
-    }
-
+        // Test size of empty queue
+        SimplePriorityQueue<Integer> emptyQ = new SimplePriorityQueue<>();
+        assertEquals(0, emptyQ.size());
+        assertTrue(emptyQ.isEmpty());
+        
+        // Test size after insertions
+        emptyQ.insert(1);
+        assertEquals(1, emptyQ.size());
+        assertFalse(emptyQ.isEmpty());
+        
+        emptyQ.insert(2);
+        assertEquals(2, emptyQ.size());
+        
+        // Test size after deletions
+        emptyQ.deleteMax();
+        assertEquals(1, emptyQ.size());
+        
+        emptyQ.deleteMax();
+        assertEquals(0, emptyQ.size());
+        assertTrue(emptyQ.isEmpty());
+        
+        // Test size with larger number of elements
+        assertEquals(100, intQ100.size());
+        assertEquals(10000, intQ10000.size());
+        assertEquals(1000000, intQ1000000.size());
+    }    
     @Test
     public void testBinarySearch() {
-
+        // This test indirectly tests the binary search functionality
+        // through insert operations that should maintain sorted order
+        
+        SimplePriorityQueue<Integer> testQ = new SimplePriorityQueue<>();
+        
+        // Insert elements in random order
+        testQ.insert(5);
+        testQ.insert(3);
+        testQ.insert(7);
+        testQ.insert(1);
+        testQ.insert(6);
+        testQ.insert(4);
+        testQ.insert(2);
+        
+        // Verify elements come out in sorted order
+        assertEquals(7, testQ.deleteMax());
+        assertEquals(6, testQ.deleteMax());
+        assertEquals(5, testQ.deleteMax());
+        assertEquals(4, testQ.deleteMax());
+        assertEquals(3, testQ.deleteMax());
+        assertEquals(2, testQ.deleteMax());
+        assertEquals(1, testQ.deleteMax());
+        
+        // Verify queue is empty
+        assertTrue(testQ.isEmpty());
+        assertEquals(0, testQ.size());
     }
 }
