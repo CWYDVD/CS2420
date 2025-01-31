@@ -42,7 +42,8 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     queue
     */
     public boolean contains(E item) {
-        return cmp.compare(arr[binarySearch(item)], item) == 0;
+        int index = binarySearch(item);
+        return index >= 0;
     };
     /**
     * Indicates whether this priority contains all of the specified elements.
@@ -55,7 +56,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     */
     public boolean containsAll(Collection<? extends E> coll){
         for (E item : coll)
-            if (! this.contains(item))
+            if (!this.contains(item))
                 return false;
         return true;
     };
@@ -96,11 +97,13 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
             this.insert(item);
         } else {
             int index = binarySearch(item);
+            index = index >= 0 ? index : -index - 1;
             for (int i = this.size; i > index; i--)
                 this.arr[i] = this.arr[i-1];
             this.arr[index] = item;
+            
+            this.size ++;
         }
-        this.size ++;
     };
     /**
     * Inserts the specified elements into this priority queue.
@@ -127,12 +130,39 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     public int size() {
         return this.size;
     };
-
+    /**
+     * Private binary search function to locate the predicted index of a given target within the data structure.
+     * @param target The target
+     * @return the index
+     */
     private int binarySearch(E target) {
-        if (this.size == 0) return 0;
-        return binarySearchRecursive(target, 0, this.size);
-    }
+        int i = 0;
+        int j = size;
+        while (i <= j) {
+            int index = i + (j - i) / 2;
+            if (arr[index] == null) break;
+            int compare = this.cmp.compare(arr[index], target);
+            if (compare == 0)
+                return index;
+            if (compare < 0)
+                i = index + 1;
+            else
+                j = index - 1;
+        }
+        return -(i + 1);
+        
 
+        /**if (this.size == 0) return 0;
+        return binarySearchRecursive(target, 0, this.size);**/
+    }
+    /**
+     * A private recursive function which we wrote to do the binary search before realizing that you didn't want a recursive function. But we are proud of it so it is still here. 
+     * @param target The target
+     * @param i the lower bound, initial 0
+     * @param j the upper bound, initial size
+     * @return the index to put it at
+     */
+    /**
     private int binarySearchRecursive(E target, int i, int j) {
         if (i >= j) 
             return(j);
@@ -149,4 +179,5 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
         else
             return(binarySearchRecursive(target, i, index));
     }
+    **/
 }
