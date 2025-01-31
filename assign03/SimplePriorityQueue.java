@@ -15,6 +15,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     private E[] arr;
     private int size;
     private Comparator<? super E> cmp;
+    
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue(){
         this((Comparator<? super E>) Comparator.naturalOrder());
@@ -28,9 +29,9 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     }
 
     /**
-    * Removes all of the elements from this priority queue. The queue will be
-    * empty when this call returns.
-    */
+     * Removes all of the elements from this priority queue. The queue will be
+     * empty when this call returns.
+     */
     @SuppressWarnings("unchecked")
     public void clear(){
         arr = (E[]) new Object[16];
@@ -57,62 +58,41 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
         for (E item : coll)
             if (! this.contains(item))
                 return false;
+        
         return true;
     }
 
     /**
-    * Retrieves and removes the maximum element in this priority queue.
-    *
-    * @return the maximum element
-    * @throws NoSuchElementException if the priority queue is empty
-    */
+     * Retrieves and removes the maximum element in this priority queue.
+     *
+     * @return the maximum element
+     * @throws NoSuchElementException if the priority queue is empty
+     */
     public E deleteMax() throws NoSuchElementException {
         if(this.size == 0) throw new NoSuchElementException();
+        
         return arr[--this.size];
     }
 
     /**
-    * Retrieves, but does not remove, the maximum element in this priority
-    * queue.
-    *
-    * @return the maximum element
-    * @throws NoSuchElementException if the priority queue is empty
-    */
+     * Retrieves, but does not remove, the maximum element in this priority
+     * queue.
+     *
+     * @return the maximum element
+     * @throws NoSuchElementException if the priority queue is empty
+     */
     public E findMax() throws NoSuchElementException{
         if (this.size == 0)
             throw new NoSuchElementException();
+        
         return arr[this.size - 1];
     }
 
-    // /**
-    // * Inserts the specified element into this priority queue.
-    // *
-    // * @param item - the element to insertch
-    // */
-    // @SuppressWarnings("unchecked")
-    // public void insert(E item){
-    //     if (this.size == this.arr.length) {
-    //         E[] newArr = (E[]) new Object[this.arr.length * 2];
-    //         for (int i = 0; i < this.arr.length; i++)
-    //             newArr[i] = this.arr[i];
-    //         this.arr = newArr;
-    //         int index = binarySearch(item);
-    //         this.arr[index] = item;
-    //     } else {
-    //         int index = binarySearch(item);
-    //         for (int i = this.size; i > index; i--) {
-    //             this.arr[i] = this.arr[i - 1];
-    //         }
-    //         this.arr[index] = item;
-    //     }
-    //     this.size ++;
-    // }
-
     /**
-    * Inserts the specified element into this priority queue.
-    *
-    * @param item - the element to insertch
-    */
+     * Inserts the specified element into this priority queue.
+     *
+     * @param item - the element to insert
+     */
     @SuppressWarnings("unchecked")
     public void insert(E item){
         if (this.size == this.arr.length) {
@@ -131,39 +111,52 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
         }
         this.size ++;
     }
-    
+
     /**
-    * Inserts the specified e   lements into this priority queue.
-    *
-    * @param coll - the collection of elements to insert
-    */
+     * Inserts the specified e   lements into this priority queue.
+     *
+     * @param coll - the collection of elements to insert
+     */
     public void insertAll(Collection<? extends E> coll) {
         for (E item:coll)
             insert(item);
     }
 
     /**
-    * Indicates whether priority queue contains any elements.
-    *
-    * @return true if this priority queue is empty; false otherwise
-    */
+     * Indicates whether priority queue contains any elements.
+     *
+     * @return true if this priority queue is empty; false otherwise
+     */
     public boolean isEmpty() {
         return this.size == 0;
-    };
+    }
+
     /**
-    * Determines the number of elements in this priority queue.
-    *
-    * @return the number of elements in this priority queue
-    */
+     * Determines the number of elements in this priority queue.
+     *
+     * @return the number of elements in this priority queue
+     */
     public int size() {
         return this.size;
     }
 
+    /**
+     * Driver of binarySearch recursion
+     * @param target the value we are looking for in the array
+     * @return the index of the value we are looking for
+     */
     private int binarySearch(E target) {
         if (this.size == 0) return 0;
         return binarySearchRecursive(target, 0, this.size);
     }
 
+    /**
+     * BinarySearch recursion
+     * @param target the value we are looking for
+     * @param i the starting position of the array
+     * @param j the ending position of the array
+     * @return the index of the value we are looking for
+     */
     private int binarySearchRecursive(E target, int i, int j) {
         if (i >= j)
             return(j);
